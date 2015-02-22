@@ -73,8 +73,10 @@ typedef struct {
  *
  * @notapi
  */
+void chSysHalt(const char *reason);
 void _unhandled_exception(void) {
 
+  chSysHalt("unhandled exception");
   while (true)
     ;
 }
