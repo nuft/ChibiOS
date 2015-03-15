@@ -153,6 +153,8 @@ VPATH     = $(SRCPATHS)
 COLOR       = \033[1;34m
 COLOR_CLEAR = \033[0m
 
+COLOR_PRINTF = printf "$(COLOR)%s$(COLOR_CLEAR)\n"
+
 #
 # Makefile rules
 #
@@ -177,7 +179,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(CPPC) -c $(CPPFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
 else
-	@echo "$(COLOR) Compiling $(<F) $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Compiling $(<F)"
 	@$(CPPC) -c $(CPPFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
 endif
 
@@ -186,7 +188,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(CPPC) -c $(CPPFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
 else
-	@echo "$(COLOR) Compiling $(<F) $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Compiling $(<F)"
 	@$(CPPC) -c $(CPPFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
 endif
 
@@ -195,7 +197,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(CC) -c $(CFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
 else
-	@echo "$(COLOR) Compiling $(<F) $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Compiling $(<F)"
 	@$(CC) -c $(CFLAGS) $(AOPT) -I. $(IINCDIR) $< -o $@
 endif
 
@@ -204,7 +206,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(CC) -c $(CFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
 else
-	@echo "$(COLOR) Compiling $(<F) $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Compiling $(<F)"
 	@$(CC) -c $(CFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
 endif
 
@@ -213,7 +215,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(AS) -c $(ASFLAGS) -I. $(IINCDIR) $< -o $@
 else
-	@echo "$(COLOR) Compiling $(<F) $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Compiling $(<F)"
 	@$(AS) -c $(ASFLAGS) -I. $(IINCDIR) $< -o $@
 endif
 
@@ -222,7 +224,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(CC) -c $(ASXFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
 else
-	@echo "$(COLOR) Compiling $(<F) $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Compiling $(<F)"
 	@$(CC) -c $(ASXFLAGS) $(TOPT) -I. $(IINCDIR) $< -o $@
 endif
 
@@ -231,7 +233,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	@echo
 	$(LD) $(OBJS) $(LDFLAGS) $(LIBS) -o $@
 else
-	@echo "$(COLOR) Linking $@ $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Linking $@"
 	@$(LD) $(OBJS) $(LDFLAGS) $(LIBS) -o $@
 endif
 
@@ -239,7 +241,7 @@ endif
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	$(HEX) $< $@
 else
-	@echo "$(COLOR) Creating $@ $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Creating $@"
 	@$(HEX) $< $@
 endif
 
@@ -247,7 +249,7 @@ endif
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	$(BIN) $< $@
 else
-	@echo "$(COLOR) Creating $@ $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Creating $@"
 	@$(BIN) $< $@
 endif
 
@@ -255,7 +257,7 @@ endif
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	$(SREC) $< $@
 else
-	@echo "$(COLOR) Creating $@ $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Creating $@"
 	@$(SREC) $< $@
 endif
 
@@ -264,7 +266,7 @@ ifeq ($(USE_VERBOSE_COMPILE),yes)
 	$(OD) $(ODFLAGS) $< > $@
 	$(SZ) $<
 else
-	@echo "$(COLOR) Creating $@ $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Creating $@"
 	@$(OD) $(ODFLAGS) $< > $@
 	@echo
 	@$(SZ) $<
@@ -274,10 +276,10 @@ endif
 ifeq ($(USE_VERBOSE_COMPILE),yes)
 	$(OD) -S $< > $@
 else
-	@echo "$(COLOR) Creating $@ $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Creating $@"
 	@$(OD) -S $< > $@
 	@echo
-	@echo "$(COLOR) Done $(COLOR_CLEAR)"
+	@$(COLOR_PRINTF) "Done"
 endif
 
 lib: $(OBJS) $(BUILDDIR)/lib$(PROJECT).a
