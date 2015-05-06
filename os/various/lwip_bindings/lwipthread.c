@@ -75,6 +75,8 @@
 #define PERIODIC_TIMER_ID       1
 #define FRAME_RECEIVED_ID       2
 
+static sys_sem_t lwip_init_done;
+
 /**
  * Stack area for the LWIP-MAC thread.
  */
@@ -204,6 +206,12 @@ static err_t ethernetif_init(struct netif *netif) {
   return ERR_OK;
 }
 
+void ipinit_done_cb(void *a)
+{
+    (void) a;
+    sys_sem_signal(&lwip_init_done);
+}
+
 /**
  * @brief LWIP handling thread.
  *
@@ -219,8 +227,13 @@ msg_t lwip_thread(void *p) {
 
   chRegSetThreadName("lwipthread");
 
+  sys_sem_new(&lwip_init_done, 0);
+
   /* Initializes the thing.*/
-  tcpip_init(NULL, NULL);
+  tcpip_init(ipinit_done_cb, NULL);
+
+  sys_sem_wait(&lwip_init_done);
+  sys_sem_free(&lwip_init_done);
 
   /* TCP/IP parameters, runtime or compile time.*/
   if (p) {
