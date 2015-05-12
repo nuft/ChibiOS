@@ -273,6 +273,10 @@ msg_t lwip_thread(void *p) {
   /* Goes to the final priority after initialization.*/
   chThdSetPriority(LWIP_THREAD_PRIORITY);
 
+#if LWIP_DHCP
+  dhcp_start(&thisif);
+#endif
+
   while (TRUE) {
     eventmask_t mask = chEvtWaitAny(ALL_EVENTS);
     if (mask & PERIODIC_TIMER_ID) {
